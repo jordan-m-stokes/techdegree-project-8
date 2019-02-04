@@ -1,0 +1,13 @@
+{
+  "name": "project-08",
+  "version": "1.0.0",
+  "description": "techdegree project number 8",
+  "main": "source/js/global.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jordan M Stokes",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {}
+}
