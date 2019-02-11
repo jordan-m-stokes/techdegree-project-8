@@ -22,7 +22,7 @@ $( document ).ready(function() {
     $(".circle--pill--list a").removeClass("selected");
     $(this).addClass("selected");
   });
-  
+
   // Adds class to parent div of select menu
   $(".circle--select select").focus(function(){
    $(this).parent().addClass("focus");
