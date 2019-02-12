@@ -1,7 +1,8 @@
 
+//gulp dependencies
 const {src, dest, series, parallel, watch} = require('gulp');
 
-//dependencies
+//other dependencies
 const concat   = require('gulp-concat');
 const connect  = require('gulp-connect');
 const del      = require('del');
@@ -12,7 +13,7 @@ const minfify  = require('gulp-uglify');
 const rename   = require('gulp-rename');
 const sass     = require('gulp-sass');
 
-//paths and order for all js
+//paths and ordering for all js
 const scriptPaths =
 [
     'src/js/circle/autogrow.js',
@@ -20,6 +21,7 @@ const scriptPaths =
     'src/js/global.js'
 ];
 
+//color code for console logging
 const consoleColors =
 {
     'green' : '\x1b[32m%s\x1b[0m'
@@ -90,7 +92,7 @@ function serve(cb)
     cb();
 }
 
-//sets watch task to watch sass files
+//sets watch task to watch sass, js, and html files
 function watchFiles(cb)
 {
     log(consoleColors.green, 'Watching files for changes...',);
