@@ -3,15 +3,15 @@
 const {src, dest, series, parallel, watch} = require('gulp');
 
 //other dependencies
-const concat   = require('gulp-concat');
-const connect  = require('gulp-connect');
-const del      = require('del');
-const imageMin = require('gulp-imagemin');
-const log      = require('fancy-log');
-const maps     = require('gulp-sourcemaps');
-const minfify  = require('gulp-uglify');
-const rename   = require('gulp-rename');
-const sass     = require('gulp-sass');
+const browserSync = require('browser-sync').create();
+const concat      = require('gulp-concat');
+const del         = require('del');
+const imageMin    = require('gulp-imagemin');
+const log         = require('fancy-log');
+const maps        = require('gulp-sourcemaps');
+const minfify     = require('gulp-uglify');
+const rename      = require('gulp-rename');
+const sass        = require('gulp-sass');
 
 //paths and ordering for all js
 const scriptPaths =
@@ -24,7 +24,7 @@ const scriptPaths =
 //color code for console logging
 const consoleColors =
 {
-    'green' : '\x1b[32m%s\x1b[0m'
+    green: '\x1b[32m%s\x1b[0m'
 };
 
 //deletes 'dist' folder
@@ -37,7 +37,8 @@ function clean()
 function buildHtml()
 {
     return src('src/*.html')
-        .pipe(dest('dist'));
+        .pipe(dest('dist'))
+        .pipe(browserSync.stream());
 }
 
 //compiles, concats, and minifies all sass into 'dist/script' folder
@@ -48,7 +49,8 @@ function buildCss()
         .pipe(sass())
         .pipe(rename('all.min.css'))
         .pipe(maps.write('./'))
-        .pipe(dest('dist/styles'));
+        .pipe(dest('dist/styles'))
+        .pipe(browserSync.stream());
 }
 
 //concats and minifies all js into 'dist/scripts' folder
@@ -60,7 +62,8 @@ function buildJs()
         .pipe(dest('dist/scripts'))
         .pipe(minfify())
         .pipe(maps.write('./'))
-        .pipe(dest('dist/scripts'));
+        .pipe(dest('dist/scripts'))
+        .pipe(browserSync.stream());
 }
 
 //minifies all images into 'dist/images' folder
@@ -81,12 +84,9 @@ function buildIcon()
 //serves project on local host
 function serve(cb)
 {
-    connect.server(
+    browserSync.init(
     {
-        name: 'Build Test',
-        root: 'dist',
-        port: 3000,
-        //livereload: true
+        server: './dist/'
     });
 
     cb();
@@ -96,6 +96,7 @@ function serve(cb)
 function watchFiles(cb)
 {
     log(consoleColors.green, 'Watching files for changes...',);
+
     watch('src/sass/**/*.scss', buildCss);
     watch('src/sass/**/*.sass', buildCss);
     watch('src/js/**/*.js', buildJs);
